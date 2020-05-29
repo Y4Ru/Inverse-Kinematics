@@ -16,6 +16,11 @@ public class Trajectory2 : MonoBehaviour
     // Total distance between the markers.
     private float journeyLength;
 
+    private bool directionChange;
+
+    private Transform startTrajectory = null;
+    private Transform endTrajectory = null;
+
     void Start()
     {
         // Keep a note of the time the movement started.
@@ -30,23 +35,32 @@ public class Trajectory2 : MonoBehaviour
     // Move to the target end position.
     void Update()
     {
-        if(transform.position == endMarker.position)
+        if (transform.position == endMarker.position && !directionChange)
         {
+            directionChange = true;
             startTime = Time.time;
-            transform.rotation = startMarker.rotation;
-            transform.position = startMarker.position;
-        } else 
+            startTrajectory = endMarker;
+            endTrajectory = startMarker;
+        } else if (transform.position == startMarker.position && !directionChange)
         {
-            // Distance moved equals elapsed time times speed..
-            float distCovered = (Time.time - startTime) * speed;
-
-            // Fraction of journey completed equals current distance divided by total distance.
-            float fractionOfJourney = distCovered / journeyLength;
-
-            // Set our position as a fraction of the distance between the markers.
-            transform.position = Vector3.Lerp(startMarker.position, endMarker.position, fractionOfJourney);
-
-            transform.rotation = Quaternion.Lerp(startMarker.rotation, endMarker.rotation, Time.time * speed);
+            directionChange = true;
+            startTime = Time.time;
+            startTrajectory = startMarker;
+            endTrajectory = endMarker;
+        } else if (transform.position != startMarker.position && transform.position != endMarker.position) {
+            directionChange = false;
         }
+
+        // Distance moved equals elapsed time times speed..
+        float distCovered = (Time.time - startTime) * speed;
+
+        // Fraction of journey completed equals current distance divided by total distance.
+        float fractionOfJourney = distCovered / journeyLength;
+
+        // Set our position as a fraction of the distance between the markers.
+        transform.position = Vector3.Lerp(startTrajectory.position, endTrajectory.position, fractionOfJourney);
+
+        transform.rotation = Quaternion.Lerp(startTrajectory.rotation, endTrajectory.rotation, fractionOfJourney);
+        
     }
 }
