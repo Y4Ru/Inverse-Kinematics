@@ -485,7 +485,7 @@ GameObject:
   - component: {fileID: 85302255}
   - component: {fileID: 85302254}
   m_Layer: 0
-  m_Name: FingerTarget
+  m_Name: RingFingerTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9293,7 +9293,7 @@ GameObject:
   - component: {fileID: 492973258}
   - component: {fileID: 492973259}
   m_Layer: 0
-  m_Name: Target
+  m_Name: HandTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10156,7 +10156,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!135 &567125359
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -33363,7 +33363,7 @@ GameObject:
   - component: {fileID: 1710639232}
   - component: {fileID: 1710639231}
   m_Layer: 0
-  m_Name: FingerTarget
+  m_Name: PinkyFingerTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33664,7 +33664,7 @@ GameObject:
   - component: {fileID: 1732898920}
   - component: {fileID: 1732898924}
   m_Layer: 0
-  m_Name: FingerTarget
+  m_Name: IndexFingerTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34608,7 +34608,7 @@ GameObject:
   - component: {fileID: 1893669552}
   - component: {fileID: 1893669551}
   m_Layer: 0
-  m_Name: FingerTarget
+  m_Name: MIddleFingerTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35421,7 +35421,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1971609344}
   m_Layer: 0
-  m_Name: Trajectory
+  m_Name: HandTrajectory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
