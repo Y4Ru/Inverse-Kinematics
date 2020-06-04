@@ -12,6 +12,8 @@ public class TrajectoryInitiator : MonoBehaviour
     public Transform endMiddle;
     public Transform startIndex;
     public Transform endIndex;
+    public Transform startThumb;
+    public Transform endThumbx;
 
     public float distance = .5f;
 
@@ -22,12 +24,8 @@ public class TrajectoryInitiator : MonoBehaviour
         setTrajectoryRange(startRing, endRing);
         setTrajectoryRange(startMiddle, endMiddle);
         setTrajectoryRange(startIndex, endIndex);
-    }
+        setTrajectoryRange(startThumb, endThumbx);
 
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     private void setTrajectoryRange(Transform startTransform, Transform endTransform) 
