@@ -234,7 +234,7 @@ namespace DitzelGames.FastIK
 
         void OnDrawGizmos()
         {
-            var current = this.transform;
+            /*var current = this.transform;
             for (int i = 0; i < ChainLength && current != null && current.parent != null; i++)
             {
                 var scale = Vector3.Distance(current.position, current.parent.position) * 0.1f;
@@ -242,7 +242,7 @@ namespace DitzelGames.FastIK
                 Handles.color = Color.green;
                 Handles.DrawWireCube(Vector3.up * 0.5f, Vector3.one);
                 current = current.parent;
-            }
+            }*/
         }
 
     }
