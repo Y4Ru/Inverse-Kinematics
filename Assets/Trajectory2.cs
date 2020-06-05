@@ -7,8 +7,8 @@ public class Trajectory2 : MonoBehaviour
     public Transform startMarker;
     public Transform endMarker;
 
-    // Movement speed in units per second.
-    public float speed = 1.0F;
+    // Movement duration from start to end marker.
+    public float movementDuration = 1.0F;
 
     // Time when the movement started.
     private float startTime;
@@ -51,8 +51,10 @@ public class Trajectory2 : MonoBehaviour
             directionChange = false;
         }
 
+        float dynamicSpeed = journeyLength / movementDuration;
+
         // Distance moved equals elapsed time times speed..
-        float distCovered = (Time.time - startTime) * speed;
+        float distCovered = (Time.time - startTime) * dynamicSpeed;
 
         // Fraction of journey completed equals current distance divided by total distance.
         float fractionOfJourney = distCovered / journeyLength;
