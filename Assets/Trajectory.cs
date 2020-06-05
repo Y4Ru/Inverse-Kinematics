@@ -1,37 +1,68 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
 
 public class Trajectory : MonoBehaviour
 {
-    public GameObject StartPos;
-    public GameObject EndPos;
-    public GameObject Target;
+    // Transforms to act as start and end markers for the journey.
+    public Transform startMarker;
+    public Transform endMarker;
 
-    public float delta = .1f;
+    // Movement duration from start to end marker.
+    public float movementDuration = 1.0F;
 
-    private Vector3 inc;
+    // Time when the movement started.
+    private float startTime;
+
+    // Total distance between the markers.
+    private float journeyLength;
+
+    private bool directionChange;
+
+    private Transform startTrajectory = null;
+    private Transform endTrajectory = null;
 
     void Start()
     {
-        Vector3 dist = EndPos.transform.position - StartPos.transform.position;
-        inc = dist * delta;
-        Target.transform.position = StartPos.transform.position;
+        // Keep a note of the time the movement started.
+        startTime = Time.time;
+        transform.rotation = startMarker.rotation;
+        transform.position = startMarker.position;
+
+        // Calculate the journey length.
+        journeyLength = Vector3.Distance(startMarker.position, endMarker.position);
     }
 
-    // Update is called once per frame
+    // Move to the target end position.
     void Update()
     {
-        Debug.Log(Vector3.Distance(Target.transform.position, EndPos.transform.position));
-        if( Vector3.Distance(Target.transform.position, EndPos.transform.position) > delta)
+        if (transform.position == endMarker.position && !directionChange)
         {
-           Target.transform.position += inc; 
-           Target.transform.rotation = Quaternion.Lerp(StartPos.transform.rotation, EndPos.transform.rotation, delta);
-        } else {
-            Target.transform.position = StartPos.transform.position;
-            Target.transform.rotation = StartPos.transform.rotation;
-
+            directionChange = true;
+            startTime = Time.time;
+            startTrajectory = endMarker;
+            endTrajectory = startMarker;
+        } else if (transform.position == startMarker.position && !directionChange)
+        {
+            directionChange = true;
+            startTime = Time.time;
+            startTrajectory = startMarker;
+            endTrajectory = endMarker;
+        } else if (transform.position != startMarker.position && transform.position != endMarker.position) {
+            directionChange = false;
         }
+
+        float dynamicSpeed = journeyLength / movementDuration;
+
+        // Distance moved equals elapsed time times speed..
+        float distCovered = (Time.time - startTime) * dynamicSpeed;
+
+        // Fraction of journey completed equals current distance divided by total distance.
+        float fractionOfJourney = distCovered / journeyLength;
+
+        // Set our position as a fraction of the distance between the markers.
+        transform.position = Vector3.Lerp(startTrajectory.position, endTrajectory.position, fractionOfJourney);
+
+        transform.rotation = Quaternion.Lerp(startTrajectory.rotation, endTrajectory.rotation, fractionOfJourney);
+        
     }
 }
