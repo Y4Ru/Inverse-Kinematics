@@ -7405,6 +7405,7 @@ MonoBehaviour:
   Iterations: 10
   Delta: 0.001
   SnapBackStrength: 1
+  useUpdate: 1
 --- !u!135 &283581399
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -9532,6 +9533,7 @@ MonoBehaviour:
   Iterations: 10
   Delta: 0.001
   SnapBackStrength: 1
+  useUpdate: 1
 --- !u!135 &488691491
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -10475,6 +10477,7 @@ MonoBehaviour:
   Iterations: 10
   Delta: 0.001
   SnapBackStrength: 1
+  useUpdate: 0
 --- !u!135 &567125359
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -11178,6 +11181,7 @@ MonoBehaviour:
   Iterations: 10
   Delta: 0.001
   SnapBackStrength: 1
+  useUpdate: 1
 --- !u!1 &657764537
 GameObject:
   m_ObjectHideFlags: 0
@@ -16966,6 +16970,7 @@ MonoBehaviour:
   Iterations: 10
   Delta: 0.001
   SnapBackStrength: 1
+  useUpdate: 1
 --- !u!135 &789751038
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -31670,6 +31675,7 @@ MonoBehaviour:
   Iterations: 10
   Delta: 0.001
   SnapBackStrength: 1
+  useUpdate: 1
 --- !u!135 &1413929895
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -36286,6 +36292,7 @@ MonoBehaviour:
   Iterations: 10
   Delta: 0.001
   SnapBackStrength: 1
+  useUpdate: 1
 --- !u!135 &2003992082
 SphereCollider:
   m_ObjectHideFlags: 0

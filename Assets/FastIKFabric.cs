@@ -39,6 +39,8 @@ namespace DitzelGames.FastIK
         [Range(0, 1)]
         public float SnapBackStrength = 1f;
 
+        public bool useUpdate = true;
+
 
         protected float[] BonesLength; //Target to Origin
         protected float CompleteLength;
@@ -114,7 +116,18 @@ namespace DitzelGames.FastIK
         // Update is called once per frame
         void LateUpdate()
         {
-            ResolveIK();
+            if(!useUpdate)
+            {
+                ResolveIK();
+            }
+        }
+
+        void Update()
+        {
+            if(useUpdate)
+            {
+                ResolveIK();
+            }
         }
 
         private void ResolveIK()
