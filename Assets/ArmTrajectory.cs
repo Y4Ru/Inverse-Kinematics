@@ -27,6 +27,8 @@ public class ArmTrajectory : MonoBehaviour
     private ArrayList movementSequence = null;
 
     private int currentMovementIndex = 0;
+    bool inverseFront = false;
+
     void Start()
     {
         // Keep a note of the time the movement started.
@@ -41,9 +43,10 @@ public class ArmTrajectory : MonoBehaviour
         doArmMovement();
     }
 
-    public void executeMovement(ArrayList sequence)
+    public void executeMovement(ArrayList movementSequence, bool inverseFront)
     {
-        movementSequence = sequence;
+        this.movementSequence = movementSequence;
+        this.inverseFront = inverseFront;
     }
 
     private void doUpdate()
@@ -65,15 +68,27 @@ public class ArmTrajectory : MonoBehaviour
 
     }
 
-    private void initCurrentMovement(Transform movementTargetPosition)
+    private void initCurrentMovement(Transform movementTarget)
     {
         // init Movement
         if (!isCurrentMovementInitialized)
         {
             startTime = Time.time;
-            journeyLength = Vector3.Distance(transform.position, movementTargetPosition.position);
+            journeyLength = Vector3.Distance(transform.position, movementTarget.position);
             startTrajectory = transform;
-            endTrajectory = movementTargetPosition;
+            endTrajectory = movementTarget;
+
+            if (currentMovement == MovementType.FRONT)
+            {
+                if (inverseFront)
+                {
+                    movementTarget.Rotate(90f, 0, 0);
+                }
+                else
+                {
+                    movementTarget.Rotate(-90f, 0, 0);
+                }
+            }
         }
         else
         {
@@ -81,14 +96,11 @@ public class ArmTrajectory : MonoBehaviour
         }
     }
 
-    private void moveArmTo(Transform movementTargetPosition)
+    private void moveArmTo(Transform movementTarget)
     {
-        Debug.Log(movementTargetPosition.name);
-        Debug.Log(isCurrentMovementInitialized);
-        Debug.Log(currentMovementIndex);
         if (isCurrentMovementInitialized)
         {
-            if (transform.position == movementTargetPosition.position)
+            if (transform.position == movementTarget.position)
             {
                 isCurrentMovementInitialized = false;
             }
@@ -96,7 +108,7 @@ public class ArmTrajectory : MonoBehaviour
         }
         else
         {
-            initCurrentMovement(movementTargetPosition);
+            initCurrentMovement(movementTarget);
             isCurrentMovementInitialized = true;
         }
     }
@@ -128,6 +140,7 @@ public class ArmTrajectory : MonoBehaviour
                 currentMovement = MovementType.NO_MOVEMENT;
                 currentMovementIndex = 0;
                 movementSequence = null;
+                inverseFront = false;
             }
         }
 

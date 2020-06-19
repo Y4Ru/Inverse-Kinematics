@@ -38,15 +38,17 @@ public class FingerTrajectory : MonoBehaviour
         doFingerMovement();
     }
 
-    public void executeCloseFinger()
+    public void executeCloseFinger(float movementDuration)
     {
+        this.movementDuration = movementDuration;
         startTime = Time.time;
         startTrajectory = openMarker;
         endTrajectory = closeMarker;
     }
 
-    public void executeOpenFinger()
+    public void executeOpenFinger(float movementDuration)
     {
+        this.movementDuration = movementDuration;
         startTime = Time.time;
         startTrajectory = closeMarker;
         endTrajectory = openMarker;
@@ -78,7 +80,6 @@ public class FingerTrajectory : MonoBehaviour
         // Fraction of journey completed equals current distance divided by total distance.
         float fractionOfJourney = distCovered / journeyLength;
 
-        Debug.Log(dynamicSpeed);
         // Set our position as a fraction of the distance between the markers.
         transform.position = Vector3.Lerp(startTrajectory.position, endTrajectory.position, fractionOfJourney);
 

@@ -26,20 +26,20 @@ public class GripAnimator : MonoBehaviour
         thumbTrajectory = thumb.GetComponent<FingerTrajectory>();
     }
 
-    public void executeOpenGrip()
+    public void executeOpenGrip(float movementDuration)
     {
-        pinkyTrajectory.executeOpenFinger();
-        ringTrajectory.executeOpenFinger();
-        middleTrajectory.executeOpenFinger();
-        indexTrajectory.executeOpenFinger();
-        thumbTrajectory.executeOpenFinger();
+        pinkyTrajectory.executeOpenFinger(movementDuration);
+        ringTrajectory.executeOpenFinger(movementDuration);
+        middleTrajectory.executeOpenFinger(movementDuration);
+        indexTrajectory.executeOpenFinger(movementDuration);
+        thumbTrajectory.executeOpenFinger(movementDuration);
     }
-    public void executeCloseGrip()
+    public void executeCloseGrip(float movementDuration)
     {
-        pinkyTrajectory.executeCloseFinger();
-        ringTrajectory.executeCloseFinger();
-        middleTrajectory.executeCloseFinger();
-        indexTrajectory.executeCloseFinger();
-        thumbTrajectory.executeCloseFinger();
+        pinkyTrajectory.executeCloseFinger(movementDuration);
+        ringTrajectory.executeCloseFinger(movementDuration);
+        middleTrajectory.executeCloseFinger(movementDuration);
+        indexTrajectory.executeCloseFinger(movementDuration);
+        thumbTrajectory.executeCloseFinger(movementDuration);
     }
 }
