@@ -24,8 +24,11 @@ public class ArmTrajectory : MonoBehaviour
 
     private bool isCurrentMovementInitialized = false;
 
-    private MovementType currentMovement = MovementType.NO_MOVEMENT;
+    private MovementType currentMovement;
 
+    private ArrayList movementSequence = null;
+
+    private int currentMovementIndex = 0;
     void Start()
     {
         // Keep a note of the time the movement started.
@@ -40,7 +43,12 @@ public class ArmTrajectory : MonoBehaviour
         doArmMovement();
     }
 
-    void doUpdate()
+    public void executeMovement(ArrayList sequence)
+    {
+        movementSequence = sequence;
+    }
+
+    private void doUpdate()
     {
         //startTime = Time.time;
 
@@ -79,13 +87,14 @@ public class ArmTrajectory : MonoBehaviour
     {
         Debug.Log(movementTargetPosition.name);
         Debug.Log(isCurrentMovementInitialized);
+        Debug.Log(currentMovementIndex);
         if (isCurrentMovementInitialized)
         {
-            doUpdate();
             if (transform.position == movementTargetPosition.position)
             {
                 isCurrentMovementInitialized = false;
             }
+            doUpdate();
         }
         else
         {
@@ -94,20 +103,36 @@ public class ArmTrajectory : MonoBehaviour
         }
     }
 
-    public void doArmMovement()
+    private void doArmMovement()
     {
-        if (transform.position == neutral.position)
+
+        if (movementSequence != null && movementSequence.Count > 0)
         {
-            currentMovement = MovementType.FRONT;
+            currentMovement = (MovementType)movementSequence[currentMovementIndex];
+
+            if (currentMovement == MovementType.FRONT && transform.position == front.position)
+            {
+                currentMovementIndex += 1;
+            }
+
+            if (currentMovement == MovementType.SIDE && transform.position == side.position)
+            {
+                currentMovementIndex += 1;
+            }
+
+            if (currentMovement == MovementType.NEUTRAL && transform.position == neutral.position)
+            {
+                currentMovementIndex += 1;
+            }
+
+            if (currentMovementIndex >= movementSequence.Count)
+            {
+                currentMovement = MovementType.NO_MOVEMENT;
+                currentMovementIndex = 0;
+                movementSequence = null;
+            }
         }
-        else if (transform.position == front.position)
-        {
-            currentMovement = MovementType.SIDE;
-        }
-        else if (transform.position == side.position)
-        {
-            currentMovement = MovementType.NEUTRAL;
-        }
+
 
         switch (currentMovement)
         {
@@ -120,16 +145,10 @@ public class ArmTrajectory : MonoBehaviour
             case MovementType.NEUTRAL:
                 moveArmTo(neutral);
                 break;
+            case MovementType.NO_MOVEMENT:
+                break;
             default:
                 break;
         }
-    }
-
-    private enum MovementType
-    {
-        NO_MOVEMENT,
-        FRONT,
-        SIDE,
-        NEUTRAL
     }
 }

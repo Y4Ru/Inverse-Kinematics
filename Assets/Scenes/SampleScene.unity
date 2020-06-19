@@ -9704,7 +9704,7 @@ MonoBehaviour:
   neutral: {fileID: 1292818845}
   front: {fileID: 1426365093}
   side: {fileID: 767604331}
-  movementDuration: 3
+  movementDuration: 10
 --- !u!114 &492973259
 MonoBehaviour:
   m_ObjectHideFlags: 0
