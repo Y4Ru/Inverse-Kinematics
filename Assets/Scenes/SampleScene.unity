@@ -483,7 +483,7 @@ GameObject:
   - component: {fileID: 85302257}
   - component: {fileID: 85302256}
   - component: {fileID: 85302255}
-  - component: {fileID: 85302254}
+  - component: {fileID: 85302258}
   m_Layer: 0
   m_Name: RingFingerTarget
   m_TagString: Untagged
@@ -505,21 +505,6 @@ Transform:
   m_Father: {fileID: 1421789203}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &85302254
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 85302252}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03fcfeb27ef7d384994677c20d0797e0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startMarker: {fileID: 1091648914}
-  endMarker: {fileID: 59127171}
-  movementDuration: 1
 --- !u!65 &85302255
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -580,6 +565,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 85302252}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &85302258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 85302252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d07d7e2087829674b864d552dda7ffff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  openMarker: {fileID: 1091648914}
+  closeMarker: {fileID: 59127171}
+  movementDuration: 1
 --- !u!1 &91876732
 GameObject:
   m_ObjectHideFlags: 0
@@ -9274,7 +9274,7 @@ GameObject:
   - component: {fileID: 458466324}
   - component: {fileID: 458466323}
   - component: {fileID: 458466322}
-  - component: {fileID: 458466321}
+  - component: {fileID: 458466325}
   m_Layer: 0
   m_Name: ThumbFingerTarget
   m_TagString: Untagged
@@ -9296,21 +9296,6 @@ Transform:
   m_Father: {fileID: 1536346486}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &458466321
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 458466319}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03fcfeb27ef7d384994677c20d0797e0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startMarker: {fileID: 1037359520}
-  endMarker: {fileID: 103671353}
-  movementDuration: 1
 --- !u!65 &458466322
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9371,6 +9356,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 458466319}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &458466325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 458466319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d07d7e2087829674b864d552dda7ffff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  openMarker: {fileID: 1037359520}
+  closeMarker: {fileID: 103671353}
+  movementDuration: 1
 --- !u!1 &472857762
 GameObject:
   m_ObjectHideFlags: 0
@@ -17530,6 +17530,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 835176928}
+  - component: {fileID: 835176927}
   m_Layer: 0
   m_Name: Finger Trajectories
   m_TagString: Untagged
@@ -17537,6 +17538,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &835176927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 835176926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92d3b92944a86b942a406f0749fd0b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pinky: {fileID: 1710639230}
+  ring: {fileID: 85302253}
+  middle: {fileID: 1893669550}
+  index: {fileID: 1732898923}
+  thumb: {fileID: 458466320}
 --- !u!4 &835176928
 Transform:
   m_ObjectHideFlags: 0
@@ -34075,7 +34093,7 @@ GameObject:
   - component: {fileID: 1710639234}
   - component: {fileID: 1710639233}
   - component: {fileID: 1710639232}
-  - component: {fileID: 1710639231}
+  - component: {fileID: 1710639235}
   m_Layer: 0
   m_Name: PinkyFingerTarget
   m_TagString: Untagged
@@ -34097,21 +34115,6 @@ Transform:
   m_Father: {fileID: 359143110}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1710639231
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1710639229}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03fcfeb27ef7d384994677c20d0797e0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startMarker: {fileID: 1238453064}
-  endMarker: {fileID: 369680003}
-  movementDuration: 1
 --- !u!65 &1710639232
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -34172,6 +34175,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1710639229}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1710639235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1710639229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d07d7e2087829674b864d552dda7ffff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  openMarker: {fileID: 1238453064}
+  closeMarker: {fileID: 369680003}
+  movementDuration: 1
 --- !u!1 &1710857341
 GameObject:
   m_ObjectHideFlags: 0
@@ -34376,7 +34394,7 @@ GameObject:
   - component: {fileID: 1732898922}
   - component: {fileID: 1732898921}
   - component: {fileID: 1732898920}
-  - component: {fileID: 1732898924}
+  - component: {fileID: 1732898925}
   m_Layer: 0
   m_Name: IndexFingerTarget
   m_TagString: Untagged
@@ -34458,7 +34476,7 @@ Transform:
   m_Father: {fileID: 32355250}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1732898924
+--- !u!114 &1732898925
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -34467,11 +34485,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1732898919}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03fcfeb27ef7d384994677c20d0797e0, type: 3}
+  m_Script: {fileID: 11500000, guid: d07d7e2087829674b864d552dda7ffff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startMarker: {fileID: 186986066}
-  endMarker: {fileID: 2039417758}
+  openMarker: {fileID: 186986066}
+  closeMarker: {fileID: 2039417758}
   movementDuration: 1
 --- !u!1 &1734872170
 GameObject:
@@ -34581,10 +34599,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e390900b7e31d7a4db135521b74db3b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neutral: {fileID: 1292818845}
-  front: {fileID: 1426365093}
-  side: {fileID: 767604331}
   handTarget: {fileID: 492973254}
+  fingerTarget: {fileID: 835176928}
 --- !u!4 &1751546444
 Transform:
   m_ObjectHideFlags: 0
@@ -35367,7 +35383,7 @@ GameObject:
   - component: {fileID: 1893669554}
   - component: {fileID: 1893669553}
   - component: {fileID: 1893669552}
-  - component: {fileID: 1893669551}
+  - component: {fileID: 1893669555}
   m_Layer: 0
   m_Name: MIddleFingerTarget
   m_TagString: Untagged
@@ -35389,21 +35405,6 @@ Transform:
   m_Father: {fileID: 691251268}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1893669551
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1893669549}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03fcfeb27ef7d384994677c20d0797e0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startMarker: {fileID: 646455998}
-  endMarker: {fileID: 1265757721}
-  movementDuration: 1
 --- !u!65 &1893669552
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -35464,6 +35465,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1893669549}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1893669555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1893669549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d07d7e2087829674b864d552dda7ffff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  openMarker: {fileID: 646455998}
+  closeMarker: {fileID: 1265757721}
+  movementDuration: 1
 --- !u!1 &1898921040
 GameObject:
   m_ObjectHideFlags: 0

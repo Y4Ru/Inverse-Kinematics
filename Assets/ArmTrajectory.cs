@@ -17,8 +17,6 @@ public class ArmTrajectory : MonoBehaviour
     // Total distance between the markers.
     private float journeyLength;
 
-    private bool directionChange;
-
     private Transform startTrajectory = null;
     private Transform endTrajectory = null;
 
