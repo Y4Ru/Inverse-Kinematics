@@ -10,24 +10,22 @@ public class ArmTrajectory : MonoBehaviour
 
     // Movement duration from start to end marker.
     public float movementDuration = 1.0F;
+    public Transform bottleHandParent = null;
+    public Transform handRoot = null;
 
+
+    bool inverseFront = false;
     // Time when the movement started.
     private float startTime;
-
     // Total distance between the markers.
     private float journeyLength;
-
     private Transform startTrajectory = null;
     private Transform endTrajectory = null;
-
     private bool isCurrentMovementInitialized = false;
-
     private MovementType currentMovement;
-
     private ArrayList movementSequence = null;
-
     private int currentMovementIndex = 0;
-    bool inverseFront = false;
+    private Vector3 offset;
 
     void Start()
     {
@@ -35,7 +33,10 @@ public class ArmTrajectory : MonoBehaviour
         startTime = Time.time;
         transform.rotation = neutral.rotation;
         transform.position = neutral.position;
+        offset = bottleHandParent.position - handRoot.position;
+        Debug.Log(Vector3.Distance(bottleHandParent.position, handRoot.position));
     }
+
 
     // Move to the target end position.
     void Update()
@@ -70,9 +71,9 @@ public class ArmTrajectory : MonoBehaviour
 
     private void initCurrentMovement(Transform movementTarget)
     {
-        // init Movement
         if (!isCurrentMovementInitialized)
         {
+            movementTarget.position = inverseFront ? movementTarget.position + new Vector3(offset.x, offset.y, -offset.z) : movementTarget.position + offset;
             startTime = Time.time;
             journeyLength = Vector3.Distance(transform.position, movementTarget.position);
             startTrajectory = transform;
