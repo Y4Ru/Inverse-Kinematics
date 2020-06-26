@@ -82,7 +82,8 @@ public class ArmTrajectory : MonoBehaviour
                 }
                 else
                 {
-                    //movementTarget.Translate(offset);
+                    offset = Quaternion.Euler(0, 90, 90) * offset;
+                    movementTarget.Translate(offset);
                     movementTarget.Rotate(-90f, 0, 0);
                 }
             }
