@@ -16496,11 +16496,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5489156, guid: 3c6646700854ccb4a87534bb89b2a869, type: 3}
       propertyPath: m_UseGravity
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5489156, guid: 3c6646700854ccb4a87534bb89b2a869, type: 3}
       propertyPath: m_IsKinematic
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6551572, guid: 3c6646700854ccb4a87534bb89b2a869, type: 3}
       propertyPath: m_Enabled
