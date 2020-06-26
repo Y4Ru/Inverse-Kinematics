@@ -77,7 +77,8 @@ public class ArmTrajectory : MonoBehaviour
             {
                 if (inverseFront)
                 {
-                    //movementTarget.position += new Vector3(-offset.x, offset.y, -offset.z);
+                    offset = Quaternion.Euler(0, 90, -90) * offset;
+                    movementTarget.Translate(offset);
                     movementTarget.Rotate(90f, 0, 0);
                 }
                 else
