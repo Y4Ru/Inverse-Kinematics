@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class ArmTrajectory : MonoBehaviour
@@ -41,6 +41,10 @@ public class ArmTrajectory : MonoBehaviour
     // Move to the target end position.
     void Update()
     {
+        Debug.DrawLine(handRoot.position, bottleHandParent.position, Color.yellow);
+        Debug.DrawLine(handRoot.position, handRoot.position + handRoot.transform.forward, Color.red);
+        Vector3 normal = Vector3.Cross(bottleHandParent.position - handRoot.position, handRoot.position + handRoot.transform.forward);
+        Debug.DrawLine(handRoot.position, handRoot.position + normal, Color.green);
         doArmMovement();
     }
 
