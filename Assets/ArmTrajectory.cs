@@ -73,23 +73,23 @@ public class ArmTrajectory : MonoBehaviour
     {
         if (!isCurrentMovementInitialized)
         {
-            movementTarget.position = inverseFront ? movementTarget.position + new Vector3(offset.x, offset.y, -offset.z) : movementTarget.position + offset;
-            startTime = Time.time;
-            journeyLength = Vector3.Distance(transform.position, movementTarget.position);
-            startTrajectory = transform;
-            endTrajectory = movementTarget;
-
             if (currentMovement == MovementType.FRONT)
             {
                 if (inverseFront)
                 {
+                    //movementTarget.position += new Vector3(-offset.x, offset.y, -offset.z);
                     movementTarget.Rotate(90f, 0, 0);
                 }
                 else
                 {
+                    //movementTarget.Translate(offset);
                     movementTarget.Rotate(-90f, 0, 0);
                 }
             }
+            startTime = Time.time;
+            journeyLength = Vector3.Distance(transform.position, movementTarget.position);
+            startTrajectory = transform;
+            endTrajectory = movementTarget;
         }
         else
         {

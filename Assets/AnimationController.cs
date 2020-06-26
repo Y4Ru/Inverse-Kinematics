@@ -36,11 +36,9 @@ public class AnimationController : MonoBehaviour
             fingerAnimator.executeOpenGrip(1.0f);
         }
 
-        Debug.Log(Vector3.Distance(bottleGrabAnchor.position, bottleHandParent.position));
         if (Vector3.Distance(bottleGrabAnchor.position, bottleHandParent.position) < 0.001f)
         {
             bottle.parent = bottleHandParent;
-            //fingerAnimator.executeCloseGrip(0.2f);
         }
 
         if (Vector3.Distance(handTarget.position, side.position) < 0.001f)
