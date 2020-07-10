@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class ArmTrajectory : MonoBehaviour
@@ -41,6 +41,10 @@ public class ArmTrajectory : MonoBehaviour
     // Move to the target end position.
     void Update()
     {
+        Debug.DrawLine(handRoot.position, bottleHandParent.position, Color.yellow);
+        Debug.DrawLine(handRoot.position, handRoot.position + handRoot.transform.forward, Color.red);
+        Vector3 normal = Vector3.Cross(bottleHandParent.position - handRoot.position, handRoot.position + handRoot.transform.forward);
+        Debug.DrawLine(handRoot.position, handRoot.position + normal, Color.green);
         doArmMovement();
     }
 
@@ -73,23 +77,25 @@ public class ArmTrajectory : MonoBehaviour
     {
         if (!isCurrentMovementInitialized)
         {
-            movementTarget.position = inverseFront ? movementTarget.position + new Vector3(offset.x, offset.y, -offset.z) : movementTarget.position + offset;
-            startTime = Time.time;
-            journeyLength = Vector3.Distance(transform.position, movementTarget.position);
-            startTrajectory = transform;
-            endTrajectory = movementTarget;
-
             if (currentMovement == MovementType.FRONT)
             {
                 if (inverseFront)
                 {
+                    offset = Quaternion.Euler(0, 90, -90) * offset;
+                    movementTarget.Translate(offset);
                     movementTarget.Rotate(90f, 0, 0);
                 }
                 else
                 {
+                    offset = Quaternion.Euler(0, 90, 90) * offset;
+                    movementTarget.Translate(offset);
                     movementTarget.Rotate(-90f, 0, 0);
                 }
             }
+            startTime = Time.time;
+            journeyLength = Vector3.Distance(transform.position, movementTarget.position);
+            startTrajectory = transform;
+            endTrajectory = movementTarget;
         }
         else
         {

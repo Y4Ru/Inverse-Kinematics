@@ -6,6 +6,7 @@ public class AnimationController : MonoBehaviour
 {
     public Transform handTarget;
 
+    public Transform neutral;
     public Transform side;
 
     public Transform fingerTarget;
@@ -15,11 +16,12 @@ public class AnimationController : MonoBehaviour
     public Transform bottleGrabAnchor;
 
     public Transform bottleHandParent;
+    private ArmTrajectory armTrajectory = null;
+
 
     void Start()
     {
-        ArmTrajectory armTrajectory = handTarget.GetComponent<ArmTrajectory>();
-        armTrajectory.executeMovement(new ArrayList { MovementType.FRONT, MovementType.SIDE, MovementType.NEUTRAL }, false);
+        armTrajectory = handTarget.GetComponent<ArmTrajectory>();
     }
 
     void Update()
@@ -36,17 +38,32 @@ public class AnimationController : MonoBehaviour
             fingerAnimator.executeOpenGrip(1.0f);
         }
 
-        Debug.Log(Vector3.Distance(bottleGrabAnchor.position, bottleHandParent.position));
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            armTrajectory.executeMovement(new ArrayList { MovementType.FRONT, MovementType.SIDE, MovementType.NEUTRAL }, false);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            armTrajectory.executeMovement(new ArrayList { MovementType.SIDE, MovementType.FRONT, MovementType.NEUTRAL }, false);
+        }
+
         if (Vector3.Distance(bottleGrabAnchor.position, bottleHandParent.position) < 0.001f)
         {
-            bottle.parent = bottleHandParent;
-            //fingerAnimator.executeCloseGrip(0.2f);
+            bottle.parent = bottleHandParent.transform;
+            bottle.GetComponent<Rigidbody>().isKinematic = true;
+
         }
 
         if (Vector3.Distance(handTarget.position, side.position) < 0.001f)
         {
             bottle.parent = null;
-            //fingerAnimator.executeOpenGrip(0.2f);
+        }
+
+        if (Vector3.Distance(handTarget.position, neutral.position) < 0.001f)
+        {
+            bottle.parent = null;
+            bottle.GetComponent<Rigidbody>().isKinematic = false;
         }
     }
 }
