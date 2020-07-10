@@ -6,6 +6,7 @@ public class AnimationController : MonoBehaviour
 {
     public Transform handTarget;
 
+    public Transform neutral;
     public Transform side;
 
     public Transform fingerTarget;
@@ -45,18 +46,24 @@ public class AnimationController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             armTrajectory.executeMovement(new ArrayList { MovementType.SIDE, MovementType.FRONT, MovementType.NEUTRAL }, false);
-            Debug.Log(">A");
         }
 
         if (Vector3.Distance(bottleGrabAnchor.position, bottleHandParent.position) < 0.001f)
         {
             bottle.parent = bottleHandParent.transform;
+            bottle.GetComponent<Rigidbody>().isKinematic = true;
+
         }
 
         if (Vector3.Distance(handTarget.position, side.position) < 0.001f)
         {
             bottle.parent = null;
-            //fingerAnimator.executeOpenGrip(0.2f);
+        }
+
+        if (Vector3.Distance(handTarget.position, neutral.position) < 0.001f)
+        {
+            bottle.parent = null;
+            bottle.GetComponent<Rigidbody>().isKinematic = false;
         }
     }
 }

@@ -34237,6 +34237,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handTarget: {fileID: 492973254}
+  neutral: {fileID: 1292818845}
   side: {fileID: 767604331}
   fingerTarget: {fileID: 835176928}
   bottle: {fileID: 305683773}
