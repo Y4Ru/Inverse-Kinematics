@@ -32,7 +32,6 @@ public class ArmTrajectory : MonoBehaviour
     void Start()
     {
         // Keep a note of the time the movement started.
-        startTime = Time.time;
         transform.rotation = neutral.rotation;
         transform.position = neutral.position;
         offset = bottleHandParent.position - handRoot.position;
@@ -53,7 +52,6 @@ public class ArmTrajectory : MonoBehaviour
     {
         transform.rotation = neutral.rotation;
         transform.position = neutral.position;
-        offset = bottleHandParent.position - handRoot.position;
 
         this.movementSequence = movementSequence;
         this.inverseFront = inverseFront;

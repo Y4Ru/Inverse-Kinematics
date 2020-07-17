@@ -18,17 +18,18 @@ public class AnimationController : MonoBehaviour
     public Transform bottleHandParent;
     private ArmTrajectory armTrajectory = null;
 
+    private GripAnimator fingerAnimator;
+
 
     void Start()
     {
         armTrajectory = handTarget.GetComponent<ArmTrajectory>();
-        armTrajectory.executeMovement(new ArrayList { MovementType.FRONT, MovementType.SIDE, MovementType.NEUTRAL }, true);
+        fingerAnimator = fingerTarget.GetComponent<GripAnimator>();
+        //armTrajectory.executeMovement(new ArrayList { MovementType.FRONT, MovementType.SIDE, MovementType.NEUTRAL }, false);
     }
 
     void Update()
     {
-        GripAnimator fingerAnimator = fingerTarget.GetComponent<GripAnimator>();
-
         if (Input.GetKeyDown(KeyCode.C))
         {
             fingerAnimator.executeCloseGrip(1.0f);
@@ -41,7 +42,6 @@ public class AnimationController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            Debug.Log("AAAAAAAAAAAAA");
             armTrajectory = handTarget.GetComponent<ArmTrajectory>();
             armTrajectory.executeMovement(new ArrayList { MovementType.FRONT, MovementType.SIDE, MovementType.NEUTRAL }, false);
         }
@@ -52,7 +52,6 @@ public class AnimationController : MonoBehaviour
         }
 
 
-        Debug.Log(Vector3.Distance(bottleGrabAnchor.position, bottleHandParent.position));
         if (Vector3.Distance(bottleGrabAnchor.position, bottleHandParent.position) < 0.01f)
         {
             bottle.parent = bottleHandParent.transform;
