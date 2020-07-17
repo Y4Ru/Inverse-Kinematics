@@ -27,6 +27,8 @@ public class ArmTrajectory : MonoBehaviour
     private int currentMovementIndex = 0;
     private Vector3 offset;
 
+    private float ParabolaAnimation;
+
     void Start()
     {
         // Keep a note of the time the movement started.
@@ -34,7 +36,6 @@ public class ArmTrajectory : MonoBehaviour
         transform.rotation = neutral.rotation;
         transform.position = neutral.position;
         offset = bottleHandParent.position - handRoot.position;
-        Debug.Log(Vector3.Distance(bottleHandParent.position, handRoot.position));
     }
 
 
@@ -50,11 +51,21 @@ public class ArmTrajectory : MonoBehaviour
 
     public void executeMovement(ArrayList movementSequence, bool inverseFront)
     {
+        transform.rotation = neutral.rotation;
+        transform.position = neutral.position;
+        offset = bottleHandParent.position - handRoot.position;
+
         this.movementSequence = movementSequence;
         this.inverseFront = inverseFront;
+        currentMovementIndex = 0;
+        if (movementSequence != null && movementSequence.Count > 0)
+        {
+            currentMovement = (MovementType)movementSequence[currentMovementIndex];
+        }
+        initCurrentMovement(neutral, getMovementTarget());
     }
 
-    private void doUpdate()
+    private void doLinearUpdate()
     {
         //startTime = Time.time;
 
@@ -66,80 +77,153 @@ public class ArmTrajectory : MonoBehaviour
         // Fraction of journey completed equals current distance divided by total distance.
         float fractionOfJourney = distCovered / journeyLength;
 
+        //Debug.Log(fractionOfJourney);
+
         // Set our position as a fraction of the distance between the markers.
         transform.position = Vector3.Lerp(startTrajectory.position, endTrajectory.position, fractionOfJourney);
 
         transform.rotation = Quaternion.Lerp(startTrajectory.rotation, endTrajectory.rotation, fractionOfJourney);
-
     }
 
-    private void initCurrentMovement(Transform movementTarget)
+    private void doParabolaUpdate()
     {
-        if (!isCurrentMovementInitialized)
+        ParabolaAnimation += Time.deltaTime * 0.5f;
+        //ParabolaAnimation = ParabolaAnimation % 2f;
+
+        // Set our position as a fraction of the distance between the markers.
+        transform.position = MathParabola.Parabola(startTrajectory.position, endTrajectory.position, 0.25f, ParabolaAnimation);
+
+        //Debug.Log(Vector3.Distance(transform.position, endTrajectory.position));
+        //Debug.Log(endTrajectory.localPosition);
+
+        transform.rotation = Quaternion.Lerp(startTrajectory.rotation, endTrajectory.rotation, ParabolaAnimation);
+    }
+
+    private void initCurrentMovement(Transform movementStart, Transform movementTarget)
+    {
+        if (currentMovement == MovementType.FRONT)
         {
-            if (currentMovement == MovementType.FRONT)
+            if (inverseFront)
             {
-                if (inverseFront)
-                {
-                    offset = Quaternion.Euler(0, 90, -90) * offset;
-                    movementTarget.Translate(offset);
-                    movementTarget.Rotate(90f, 0, 0);
-                }
-                else
-                {
-                    offset = Quaternion.Euler(0, 90, 90) * offset;
-                    movementTarget.Translate(offset);
-                    movementTarget.Rotate(-90f, 0, 0);
-                }
+                offset = Quaternion.Euler(0, 90, -90) * offset;
+                movementTarget.Translate(offset);
+                movementTarget.Rotate(90f, 0, 0);
             }
-            startTime = Time.time;
-            journeyLength = Vector3.Distance(transform.position, movementTarget.position);
-            startTrajectory = transform;
-            endTrajectory = movementTarget;
+            else
+            {
+                offset = Quaternion.Euler(0, 90, 90) * offset;
+                movementTarget.Translate(offset);
+                movementTarget.Rotate(-90f, 0, 0);
+            }
         }
-        else
+        startTime = Time.time;
+        journeyLength = Vector3.Distance(transform.position, movementTarget.position);
+        startTrajectory = movementStart;
+        endTrajectory = movementTarget;
+
+        isCurrentMovementInitialized = true;
+    }
+
+    private Transform getMovementOrigin()
+    {
+        switch (getPreviousMovement())
         {
-            isCurrentMovementInitialized = true;
+            case MovementType.FRONT:
+                return front;
+            case MovementType.SIDE:
+                return side;
+            case MovementType.NEUTRAL:
+                return neutral;
+            case MovementType.NO_MOVEMENT:
+                return null;
+            default:
+                return null;
         }
     }
 
     private void moveArmTo(Transform movementTarget)
     {
-        if (isCurrentMovementInitialized)
+        //Debug.Log(isCurrentMovementInitialized);
+        //Debug.Log(currentMovement);
+        //Debug.Log(Vector3.Distance(transform.position, movementTarget.position));
+
+        if (Vector3.Distance(transform.position, movementTarget.position) < 0.001f)
         {
-            if (transform.position == movementTarget.position)
-            {
-                isCurrentMovementInitialized = false;
-            }
-            doUpdate();
+            isCurrentMovementInitialized = false;
+        }
+        if (currentMovement == MovementType.SIDE && getPreviousMovement() == MovementType.FRONT || currentMovement == MovementType.FRONT && getPreviousMovement() == MovementType.SIDE)
+        {
+            doParabolaUpdate();
         }
         else
         {
-            initCurrentMovement(movementTarget);
-            isCurrentMovementInitialized = true;
+            doLinearUpdate();
+
         }
+
+
     }
 
+    private MovementType getPreviousMovement()
+    {
+        if (currentMovementIndex == 0)
+        {
+            return MovementType.NO_MOVEMENT;
+        }
+
+        return (MovementType)movementSequence[currentMovementIndex - 1];
+    }
+
+    private Transform getMovementTarget()
+    {
+        switch (currentMovement)
+        {
+            case MovementType.FRONT:
+                return front;
+            case MovementType.SIDE:
+                return side;
+            case MovementType.NEUTRAL:
+                return neutral;
+            case MovementType.NO_MOVEMENT:
+                return null;
+            default:
+                return null;
+        }
+
+    }
     private void doArmMovement()
     {
-
         if (movementSequence != null && movementSequence.Count > 0)
         {
-            currentMovement = (MovementType)movementSequence[currentMovementIndex];
 
-            if (currentMovement == MovementType.FRONT && transform.position == front.position)
+            if (currentMovement == MovementType.FRONT && Vector3.Distance(transform.position, front.position) < 0.01f)
             {
                 currentMovementIndex += 1;
+                if (currentMovementIndex < movementSequence.Count)
+                {
+                    currentMovement = (MovementType)movementSequence[currentMovementIndex];
+                    initCurrentMovement(front, getMovementTarget());
+                }
             }
 
-            if (currentMovement == MovementType.SIDE && transform.position == side.position)
+            if (currentMovement == MovementType.SIDE && Vector3.Distance(transform.position, side.position) < 0.01f)
             {
                 currentMovementIndex += 1;
+                if (currentMovementIndex < movementSequence.Count)
+                {
+                    currentMovement = (MovementType)movementSequence[currentMovementIndex];
+                    initCurrentMovement(side, getMovementTarget());
+                }
             }
 
-            if (currentMovement == MovementType.NEUTRAL && transform.position == neutral.position)
+            if (currentMovement == MovementType.NEUTRAL && Vector3.Distance(transform.position, neutral.position) < 0.01f)
             {
                 currentMovementIndex += 1;
+                if (currentMovementIndex < movementSequence.Count)
+                {
+                    currentMovement = (MovementType)movementSequence[currentMovementIndex];
+                    initCurrentMovement(neutral, getMovementTarget());
+                }
             }
 
             if (currentMovementIndex >= movementSequence.Count)
@@ -150,7 +234,6 @@ public class ArmTrajectory : MonoBehaviour
                 inverseFront = false;
             }
         }
-
 
         switch (currentMovement)
         {

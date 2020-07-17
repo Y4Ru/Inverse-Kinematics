@@ -22,6 +22,7 @@ public class AnimationController : MonoBehaviour
     void Start()
     {
         armTrajectory = handTarget.GetComponent<ArmTrajectory>();
+        armTrajectory.executeMovement(new ArrayList { MovementType.FRONT, MovementType.SIDE, MovementType.NEUTRAL }, true);
     }
 
     void Update()
@@ -40,6 +41,8 @@ public class AnimationController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
+            Debug.Log("AAAAAAAAAAAAA");
+            armTrajectory = handTarget.GetComponent<ArmTrajectory>();
             armTrajectory.executeMovement(new ArrayList { MovementType.FRONT, MovementType.SIDE, MovementType.NEUTRAL }, false);
         }
 
@@ -48,22 +51,25 @@ public class AnimationController : MonoBehaviour
             armTrajectory.executeMovement(new ArrayList { MovementType.SIDE, MovementType.FRONT, MovementType.NEUTRAL }, false);
         }
 
-        if (Vector3.Distance(bottleGrabAnchor.position, bottleHandParent.position) < 0.001f)
+
+        Debug.Log(Vector3.Distance(bottleGrabAnchor.position, bottleHandParent.position));
+        if (Vector3.Distance(bottleGrabAnchor.position, bottleHandParent.position) < 0.01f)
         {
             bottle.parent = bottleHandParent.transform;
             bottle.GetComponent<Rigidbody>().isKinematic = true;
 
         }
 
-        if (Vector3.Distance(handTarget.position, side.position) < 0.001f)
-        {
-            bottle.parent = null;
-        }
-
-        if (Vector3.Distance(handTarget.position, neutral.position) < 0.001f)
+        if (Vector3.Distance(handTarget.position, side.position) < 0.01f)
         {
             bottle.parent = null;
             bottle.GetComponent<Rigidbody>().isKinematic = false;
+
+        }
+
+        if (Vector3.Distance(handTarget.position, neutral.position) < 0.01f)
+        {
+            bottle.parent = null;
         }
     }
 }

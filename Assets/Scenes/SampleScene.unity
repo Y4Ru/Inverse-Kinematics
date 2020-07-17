@@ -9466,7 +9466,7 @@ MonoBehaviour:
   neutral: {fileID: 1292818845}
   front: {fileID: 1516211005}
   side: {fileID: 767604331}
-  movementDuration: 50
+  movementDuration: 2
   bottleHandParent: {fileID: 626757379}
   handRoot: {fileID: 956520903}
 --- !u!1 &498461528
@@ -16649,7 +16649,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 767604330}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.55, y: 1.990412, z: -2.39}
+  m_LocalPosition: {x: 0.55, y: 2, z: -2.39}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_Children: []
   m_Father: {fileID: 1971609344}
@@ -30892,6 +30892,25 @@ Transform:
   m_Father: {fileID: 224129067}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1323415403 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 107602, guid: 3c6646700854ccb4a87534bb89b2a869,
+    type: 3}
+  m_PrefabInstance: {fileID: 743967709}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1323415407
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1323415403}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.34006786, y: 0.34006795, z: 0.10160002}
+  m_Center: {x: 4.656693e-10, y: 0, z: 0.05080001}
 --- !u!1 &1326863905
 GameObject:
   m_ObjectHideFlags: 0
