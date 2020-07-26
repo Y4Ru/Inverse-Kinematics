@@ -34,7 +34,7 @@ public class ArmTrajectory : MonoBehaviour
 
     private Vector3 bottleForwardVector = new Vector3(1, 0, 0);
     private Vector3 bottleUpVector = new Vector3(0, 1, 0);
-    private Vector3 bottleLeftVector = new Vector3(0, 0, 1);
+    private Vector3 bottleRightVector = new Vector3(0, 0, -1);
 
     void Start()
     {
@@ -42,7 +42,6 @@ public class ArmTrajectory : MonoBehaviour
         transform.rotation = neutral.rotation;
         transform.position = neutral.position;
         offset = bottleHandParent.position - handRoot.position;
-        Debug.Log(offset);
         frontOriginPos = front.position;
         frontOriginRot = front.rotation;
     }
@@ -55,7 +54,8 @@ public class ArmTrajectory : MonoBehaviour
         Debug.DrawLine(handRoot.position, handRoot.position + handRoot.transform.up, Color.yellow);
         Debug.DrawLine(handRoot.position, handRoot.position + handRoot.transform.forward, Color.red);
         Vector3 normal = Vector3.Cross(bottleHandParent.position - handRoot.position, handRoot.position + handRoot.transform.forward);
-        Debug.DrawLine(handRoot.position, handRoot.position + normal, Color.green);
+        //Debug.DrawLine(handRoot.position, handRoot.position + normal, Color.green);
+        Debug.DrawLine(handRoot.position, handRoot.position + handRoot.transform.right, Color.green);
         doArmMovement();
     }
 
@@ -67,8 +67,6 @@ public class ArmTrajectory : MonoBehaviour
         front.position = frontOriginPos;
         front.rotation = frontOriginRot;
 
-        //offset = bottleHandParent.position - handRoot.position;
-        Debug.Log(bottleHandParent.position - handRoot.position);
 
         startTrajectory = null;
         endTrajectory = null;
@@ -131,22 +129,27 @@ public class ArmTrajectory : MonoBehaviour
 
     private void initOffset(Transform movementTarget)
     {
+        offset = bottleHandParent.position - handRoot.position;
 
-        Vector3 handVector1 = handRoot.position - bottleHandParent.position;
-        Vector3 handVector2 = handRoot.position - (handRoot.position + handRoot.transform.forward);
 
-        Vector3 normal = Vector3.Cross(bottleHandParent.position - handRoot.position, handRoot.position + handRoot.transform.forward);
-        Vector3 handVector3 = handRoot.position - (handRoot.position + normal);
+        Vector3 handFrontVector = (handRoot.position + handRoot.transform.forward) - handRoot.position;
+        Vector3 handUpVector = (handRoot.position + handRoot.transform.up) - handRoot.position;
+        Vector3 handRightVector = (handRoot.position + handRoot.transform.right) - handRoot.position;
+
+        Debug.Log(offset);
+        Debug.Log(handFrontVector);
+
+        Debug.Log(Quaternion.FromToRotation(handFrontVector, bottleForwardVector).eulerAngles);
 
         if (inverseFront)
         {
-            offset = Quaternion.Euler(0, 90, -90) * offset;
+            offset = Quaternion.Euler(90, 0, 0) * -offset;
             movementTarget.Translate(offset);
             movementTarget.Rotate(90f, 0, 0);
         }
         else
         {
-            offset = Quaternion.Euler(0, 90, 90) * offset;
+            offset = Quaternion.Euler(-90, 0, 0) * -offset;
             movementTarget.Translate(offset);
             movementTarget.Rotate(-90f, 0, 0);
         }
