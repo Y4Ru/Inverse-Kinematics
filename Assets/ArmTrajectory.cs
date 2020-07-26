@@ -13,6 +13,9 @@ public class ArmTrajectory : MonoBehaviour
     public Transform bottleHandParent = null;
     public Transform handRoot = null;
 
+    private Vector3 frontOriginPos;
+
+    private Quaternion frontOriginRot;
 
     bool inverseFront = false;
     // Time when the movement started.
@@ -27,7 +30,11 @@ public class ArmTrajectory : MonoBehaviour
     private int currentMovementIndex = 0;
     private Vector3 offset;
 
-    private float ParabolaAnimation;
+    private float ParabolaAnimation = 0;
+
+    private Vector3 bottleForwardVector = new Vector3(1, 0, 0);
+    private Vector3 bottleUpVector = new Vector3(0, 1, 0);
+    private Vector3 bottleLeftVector = new Vector3(0, 0, 1);
 
     void Start()
     {
@@ -35,13 +42,17 @@ public class ArmTrajectory : MonoBehaviour
         transform.rotation = neutral.rotation;
         transform.position = neutral.position;
         offset = bottleHandParent.position - handRoot.position;
+        Debug.Log(offset);
+        frontOriginPos = front.position;
+        frontOriginRot = front.rotation;
     }
 
 
     // Move to the target end position.
     void Update()
     {
-        Debug.DrawLine(handRoot.position, bottleHandParent.position, Color.yellow);
+        //Debug.DrawLine(handRoot.position, bottleHandParent.position, Color.yellow);
+        Debug.DrawLine(handRoot.position, handRoot.position + handRoot.transform.up, Color.yellow);
         Debug.DrawLine(handRoot.position, handRoot.position + handRoot.transform.forward, Color.red);
         Vector3 normal = Vector3.Cross(bottleHandParent.position - handRoot.position, handRoot.position + handRoot.transform.forward);
         Debug.DrawLine(handRoot.position, handRoot.position + normal, Color.green);
@@ -52,6 +63,17 @@ public class ArmTrajectory : MonoBehaviour
     {
         transform.rotation = neutral.rotation;
         transform.position = neutral.position;
+
+        front.position = frontOriginPos;
+        front.rotation = frontOriginRot;
+
+        //offset = bottleHandParent.position - handRoot.position;
+        Debug.Log(bottleHandParent.position - handRoot.position);
+
+        startTrajectory = null;
+        endTrajectory = null;
+        isCurrentMovementInitialized = false;
+        ParabolaAnimation = 0;
 
         this.movementSequence = movementSequence;
         this.inverseFront = inverseFront;
@@ -65,8 +87,6 @@ public class ArmTrajectory : MonoBehaviour
 
     private void doLinearUpdate()
     {
-        //startTime = Time.time;
-
         float dynamicSpeed = journeyLength / movementDuration;
 
         // Distance moved equals elapsed time times speed..
@@ -75,44 +95,31 @@ public class ArmTrajectory : MonoBehaviour
         // Fraction of journey completed equals current distance divided by total distance.
         float fractionOfJourney = distCovered / journeyLength;
 
-        //Debug.Log(fractionOfJourney);
-
         // Set our position as a fraction of the distance between the markers.
         transform.position = Vector3.Lerp(startTrajectory.position, endTrajectory.position, fractionOfJourney);
-
         transform.rotation = Quaternion.Lerp(startTrajectory.rotation, endTrajectory.rotation, fractionOfJourney);
     }
 
     private void doParabolaUpdate()
     {
-        ParabolaAnimation += Time.deltaTime * 0.5f;
-        //ParabolaAnimation = ParabolaAnimation % 2f;
+        float dynamicSpeed = journeyLength / movementDuration;
+
+        // Distance moved equals elapsed time times speed..
+        float distCovered = (Time.time - startTime) * dynamicSpeed;
+
+        // Fraction of journey completed equals current distance divided by total distance.
+        float fractionOfJourney = distCovered / journeyLength;
 
         // Set our position as a fraction of the distance between the markers.
-        transform.position = MathParabola.Parabola(startTrajectory.position, endTrajectory.position, 0.25f, ParabolaAnimation);
-
-        //Debug.Log(Vector3.Distance(transform.position, endTrajectory.position));
-        //Debug.Log(endTrajectory.localPosition);
-
-        transform.rotation = Quaternion.Lerp(startTrajectory.rotation, endTrajectory.rotation, ParabolaAnimation);
+        transform.position = MathParabola.Parabola(startTrajectory.position, endTrajectory.position, 0.5f, fractionOfJourney);
+        transform.rotation = Quaternion.Lerp(startTrajectory.rotation, endTrajectory.rotation, fractionOfJourney);
     }
 
     private void initCurrentMovement(Transform movementStart, Transform movementTarget)
     {
         if (currentMovement == MovementType.FRONT)
         {
-            if (inverseFront)
-            {
-                offset = Quaternion.Euler(0, 90, -90) * offset;
-                movementTarget.Translate(offset);
-                movementTarget.Rotate(90f, 0, 0);
-            }
-            else
-            {
-                offset = Quaternion.Euler(0, 90, 90) * offset;
-                movementTarget.Translate(offset);
-                movementTarget.Rotate(-90f, 0, 0);
-            }
+            initOffset(movementTarget);
         }
         startTime = Time.time;
         journeyLength = Vector3.Distance(transform.position, movementTarget.position);
@@ -120,6 +127,29 @@ public class ArmTrajectory : MonoBehaviour
         endTrajectory = movementTarget;
 
         isCurrentMovementInitialized = true;
+    }
+
+    private void initOffset(Transform movementTarget)
+    {
+
+        Vector3 handVector1 = handRoot.position - bottleHandParent.position;
+        Vector3 handVector2 = handRoot.position - (handRoot.position + handRoot.transform.forward);
+
+        Vector3 normal = Vector3.Cross(bottleHandParent.position - handRoot.position, handRoot.position + handRoot.transform.forward);
+        Vector3 handVector3 = handRoot.position - (handRoot.position + normal);
+
+        if (inverseFront)
+        {
+            offset = Quaternion.Euler(0, 90, -90) * offset;
+            movementTarget.Translate(offset);
+            movementTarget.Rotate(90f, 0, 0);
+        }
+        else
+        {
+            offset = Quaternion.Euler(0, 90, 90) * offset;
+            movementTarget.Translate(offset);
+            movementTarget.Rotate(-90f, 0, 0);
+        }
     }
 
     private Transform getMovementOrigin()
