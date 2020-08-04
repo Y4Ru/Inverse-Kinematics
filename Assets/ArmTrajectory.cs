@@ -196,11 +196,11 @@ public class ArmTrajectory : MonoBehaviour
 
             if (currentMovement == MovementType.FRONT)
             {
-                side.Rotate(90f, 0, 0);
+                side.Rotate(-90, 0, 0);
             }
             else
             {
-                front.Rotate(90f, 0, 0);
+                front.Rotate(-90, 0, 0);
             }
         }
         else
