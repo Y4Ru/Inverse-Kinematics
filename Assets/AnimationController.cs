@@ -6,16 +6,8 @@ public class AnimationController : MonoBehaviour
 {
     public Transform handTarget;
 
-    public Transform neutral;
-    public Transform side;
-
     public Transform fingerTarget;
 
-    public Transform bottle;
-
-    public Transform bottleGrabAnchor;
-
-    public Transform bottleHandParent;
     private ArmTrajectory armTrajectory = null;
 
     private GripAnimator fingerAnimator;
@@ -42,32 +34,12 @@ public class AnimationController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            armTrajectory.executeMovement(new ArrayList { MovementType.FRONT, MovementType.SIDE, MovementType.NEUTRAL }, true);
+            armTrajectory.executeMovement(new ArrayList { MovementType.FRONT, MovementType.SIDE, MovementType.NEUTRAL }, false);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            armTrajectory.executeMovement(new ArrayList { MovementType.SIDE, MovementType.FRONT, MovementType.NEUTRAL }, true);
-        }
-
-
-        if (Vector3.Distance(bottleGrabAnchor.position, bottleHandParent.position) < 0.01f)
-        {
-            bottle.parent = bottleHandParent.transform;
-            bottle.GetComponent<Rigidbody>().isKinematic = true;
-
-        }
-
-        if (Vector3.Distance(handTarget.position, side.position) < 0.01f)
-        {
-            bottle.parent = null;
-            bottle.GetComponent<Rigidbody>().isKinematic = false;
-
-        }
-
-        if (Vector3.Distance(handTarget.position, neutral.position) < 0.01f)
-        {
-            bottle.parent = null;
+            armTrajectory.executeMovement(new ArrayList { MovementType.SIDE, MovementType.FRONT, MovementType.NEUTRAL }, false);
         }
     }
 }

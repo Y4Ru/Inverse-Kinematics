@@ -17,6 +17,10 @@ public class ArmTrajectory : MonoBehaviour
 
     private Quaternion frontOriginRot;
 
+    private Vector3 sideOriginPos;
+
+    private Quaternion sideOriginRot;
+
     bool inverseFront = false;
     // Time when the movement started.
     private float startTime;
@@ -28,22 +32,25 @@ public class ArmTrajectory : MonoBehaviour
     private MovementType currentMovement;
     private ArrayList movementSequence = null;
     private int currentMovementIndex = 0;
-    private Vector3 offset;
-
     private float ParabolaAnimation = 0;
 
     private Vector3 bottleForwardVector = new Vector3(1, 0, 0);
     private Vector3 bottleUpVector = new Vector3(0, 1, 0);
     private Vector3 bottleRightVector = new Vector3(0, 0, -1);
 
+    public Transform bottle;
+
+    public Transform bottleGrabAnchor;
+
     void Start()
     {
         // Keep a note of the time the movement started.
         transform.rotation = neutral.rotation;
         transform.position = neutral.position;
-        offset = bottleHandParent.position - handRoot.position;
         frontOriginPos = front.position;
         frontOriginRot = front.rotation;
+        sideOriginPos = side.position;
+        sideOriginRot = side.rotation;
     }
 
 
@@ -57,6 +64,39 @@ public class ArmTrajectory : MonoBehaviour
         //Debug.DrawLine(handRoot.position, handRoot.position + normal, Color.green);
         Debug.DrawLine(handRoot.position, handRoot.position + handRoot.transform.right, Color.green);
         doArmMovement();
+
+        if (Vector3.Distance(bottleGrabAnchor.position, bottleHandParent.position) < 0.01f)
+        {
+            bottle.parent = bottleHandParent.transform;
+            bottle.GetComponent<Rigidbody>().isKinematic = true;
+
+        }
+
+        if (Vector3.Distance(transform.position, neutral.position) < 0.01f)
+        {
+            bottle.parent = null;
+        }
+
+        if (getPreviousMovement() == MovementType.SIDE && currentMovement == MovementType.FRONT)
+        {
+            if (Vector3.Distance(transform.position, front.position) < 0.01f)
+            {
+                bottle.parent = null;
+                bottle.GetComponent<Rigidbody>().isKinematic = false;
+                bottle.position = frontOriginPos;
+            }
+        }
+
+        if (getPreviousMovement() == MovementType.FRONT && currentMovement == MovementType.SIDE)
+        {
+            Debug.Log(Vector3.Distance(transform.position, side.position));
+            if (Vector3.Distance(transform.position, side.position) < 0.01f)
+            {
+                bottle.parent = null;
+                bottle.GetComponent<Rigidbody>().isKinematic = false;
+                bottle.position = sideOriginPos;
+            }
+        }
     }
 
     public void executeMovement(ArrayList movementSequence, bool inverseFront)
@@ -66,6 +106,8 @@ public class ArmTrajectory : MonoBehaviour
 
         front.position = frontOriginPos;
         front.rotation = frontOriginRot;
+        side.position = sideOriginPos;
+        side.rotation = sideOriginRot;
 
 
         startTrajectory = null;
@@ -80,7 +122,7 @@ public class ArmTrajectory : MonoBehaviour
         {
             currentMovement = (MovementType)movementSequence[currentMovementIndex];
         }
-        initCurrentMovement(neutral, getMovementTarget());
+        initCurrentMovement(neutral, getCurrentMovementTarget());
     }
 
     private void doLinearUpdate()
@@ -110,12 +152,16 @@ public class ArmTrajectory : MonoBehaviour
 
         // Set our position as a fraction of the distance between the markers.
         transform.position = MathParabola.Parabola(startTrajectory.position, endTrajectory.position, 0.5f, fractionOfJourney);
-        transform.rotation = Quaternion.Lerp(startTrajectory.rotation, endTrajectory.rotation, fractionOfJourney);
+        if (inverseFront)
+        {
+            transform.rotation = Quaternion.Lerp(startTrajectory.rotation, endTrajectory.rotation, fractionOfJourney);
+
+        }
     }
 
     private void initCurrentMovement(Transform movementStart, Transform movementTarget)
     {
-        if (currentMovement == MovementType.FRONT)
+        if (getPreviousMovement() == MovementType.NO_MOVEMENT && (currentMovement == MovementType.FRONT || currentMovement == MovementType.SIDE))
         {
             initOffset(movementTarget);
         }
@@ -129,29 +175,53 @@ public class ArmTrajectory : MonoBehaviour
 
     private void initOffset(Transform movementTarget)
     {
-        offset = bottleHandParent.position - handRoot.position;
+        Vector3 offset = bottleHandParent.position - handRoot.position;
 
 
-        Vector3 handFrontVector = (handRoot.position + handRoot.transform.forward) - handRoot.position;
+        Vector3 handForwardVector = (handRoot.position + handRoot.transform.forward) - handRoot.position;
         Vector3 handUpVector = (handRoot.position + handRoot.transform.up) - handRoot.position;
         Vector3 handRightVector = (handRoot.position + handRoot.transform.right) - handRoot.position;
 
-        Debug.Log(offset);
-        Debug.Log(handFrontVector);
+        Debug.Log(Quaternion.FromToRotation(handForwardVector, bottleForwardVector).eulerAngles);
+        Debug.Log(Quaternion.FromToRotation(handRightVector, -bottleUpVector).eulerAngles);
+        Debug.Log(Quaternion.FromToRotation(handUpVector, bottleRightVector).eulerAngles);
 
-        Debug.Log(Quaternion.FromToRotation(handFrontVector, bottleForwardVector).eulerAngles);
 
         if (inverseFront)
         {
             offset = Quaternion.Euler(90, 0, 0) * -offset;
             movementTarget.Translate(offset);
             movementTarget.Rotate(90f, 0, 0);
+            getNextMovementTarget().Translate(offset);
+
+            if (currentMovement == MovementType.FRONT)
+            {
+                side.Rotate(90f, 0, 0);
+            }
+            else
+            {
+                front.Rotate(90f, 0, 0);
+            }
         }
         else
         {
-            offset = Quaternion.Euler(-90, 0, 0) * -offset;
+            Quaternion frontx = Quaternion.FromToRotation(handForwardVector, bottleForwardVector);
+            Quaternion right = Quaternion.FromToRotation(handRightVector, -bottleUpVector);
+            Quaternion up = Quaternion.FromToRotation(handUpVector, bottleRightVector);
+
+            offset = Quaternion.Euler(270, 0, 0) * -offset;
             movementTarget.Translate(offset);
-            movementTarget.Rotate(-90f, 0, 0);
+            movementTarget.Rotate(270, 0, 0);
+            getNextMovementTarget().Translate(offset);
+
+            if (currentMovement == MovementType.FRONT)
+            {
+                side.Rotate(270f, 0, 0);
+            }
+            else
+            {
+                front.Rotate(270, 0, 0);
+            }
         }
     }
 
@@ -205,9 +275,32 @@ public class ArmTrajectory : MonoBehaviour
         return (MovementType)movementSequence[currentMovementIndex - 1];
     }
 
-    private Transform getMovementTarget()
+    private Transform getCurrentMovementTarget()
     {
         switch (currentMovement)
+        {
+            case MovementType.FRONT:
+                return front;
+            case MovementType.SIDE:
+                return side;
+            case MovementType.NEUTRAL:
+                return neutral;
+            case MovementType.NO_MOVEMENT:
+                return null;
+            default:
+                return null;
+        }
+
+    }
+
+    private Transform getNextMovementTarget()
+    {
+        if (currentMovementIndex >= movementSequence.Count - 1)
+        {
+            return null;
+        }
+
+        switch ((MovementType)movementSequence[currentMovementIndex + 1])
         {
             case MovementType.FRONT:
                 return front;
@@ -233,7 +326,7 @@ public class ArmTrajectory : MonoBehaviour
                 if (currentMovementIndex < movementSequence.Count)
                 {
                     currentMovement = (MovementType)movementSequence[currentMovementIndex];
-                    initCurrentMovement(front, getMovementTarget());
+                    initCurrentMovement(front, getCurrentMovementTarget());
                 }
             }
 
@@ -243,7 +336,7 @@ public class ArmTrajectory : MonoBehaviour
                 if (currentMovementIndex < movementSequence.Count)
                 {
                     currentMovement = (MovementType)movementSequence[currentMovementIndex];
-                    initCurrentMovement(side, getMovementTarget());
+                    initCurrentMovement(side, getCurrentMovementTarget());
                 }
             }
 
@@ -253,7 +346,7 @@ public class ArmTrajectory : MonoBehaviour
                 if (currentMovementIndex < movementSequence.Count)
                 {
                     currentMovement = (MovementType)movementSequence[currentMovementIndex];
-                    initCurrentMovement(neutral, getMovementTarget());
+                    initCurrentMovement(neutral, getCurrentMovementTarget());
                 }
             }
 
