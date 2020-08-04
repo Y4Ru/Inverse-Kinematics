@@ -58,11 +58,11 @@ public class ArmTrajectory : MonoBehaviour
     void Update()
     {
         //Debug.DrawLine(handRoot.position, bottleHandParent.position, Color.yellow);
-        Debug.DrawLine(handRoot.position, handRoot.position + handRoot.transform.up, Color.yellow);
-        Debug.DrawLine(handRoot.position, handRoot.position + handRoot.transform.forward, Color.red);
-        Vector3 normal = Vector3.Cross(bottleHandParent.position - handRoot.position, handRoot.position + handRoot.transform.forward);
+        //Debug.DrawLine(handRoot.position, handRoot.position + handRoot.transform.up, Color.yellow);
+        //Debug.DrawLine(handRoot.position, handRoot.position + handRoot.transform.forward, Color.red);
+        //Vector3 normal = Vector3.Cross(bottleHandParent.position - handRoot.position, handRoot.position + handRoot.transform.forward);
         //Debug.DrawLine(handRoot.position, handRoot.position + normal, Color.green);
-        Debug.DrawLine(handRoot.position, handRoot.position + handRoot.transform.right, Color.green);
+        //Debug.DrawLine(handRoot.position, handRoot.position + handRoot.transform.right, Color.green);
         doArmMovement();
 
         if (Vector3.Distance(bottleGrabAnchor.position, bottleHandParent.position) < 0.01f)
@@ -89,7 +89,6 @@ public class ArmTrajectory : MonoBehaviour
 
         if (getPreviousMovement() == MovementType.FRONT && currentMovement == MovementType.SIDE)
         {
-            Debug.Log(Vector3.Distance(transform.position, side.position));
             if (Vector3.Distance(transform.position, side.position) < 0.01f)
             {
                 bottle.parent = null;
