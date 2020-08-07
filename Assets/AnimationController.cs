@@ -8,16 +8,30 @@ public class AnimationController : MonoBehaviour
 
     public Transform fingerTarget;
 
-    private ArmTrajectory armTrajectory = null;
+    public Transform bottle;
+
+    public Transform front;
+
+    public Transform side;
+
+    private Vector3 frontOriginPos;
+
+    private Vector3 sideOriginPos;
+
+    private ArmTrajectory2 armTrajectory = null;
 
     private GripAnimator fingerAnimator;
 
 
+
     void Start()
     {
-        armTrajectory = handTarget.GetComponent<ArmTrajectory>();
+        armTrajectory = handTarget.GetComponent<ArmTrajectory2>();
         fingerAnimator = fingerTarget.GetComponent<GripAnimator>();
         //armTrajectory.executeMovement(new ArrayList { MovementType.FRONT, MovementType.SIDE, MovementType.NEUTRAL }, false);
+
+        frontOriginPos = front.position;
+        sideOriginPos = side.position;
     }
 
     void Update()
@@ -34,12 +48,22 @@ public class AnimationController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            armTrajectory.executeMovement(new ArrayList { MovementType.FRONT, MovementType.SIDE, MovementType.NEUTRAL }, true);
+            armTrajectory.executeMovement(new ArrayList { MovementType.FRONT, MovementType.SIDE, MovementType.NEUTRAL }, false);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            armTrajectory.executeMovement(new ArrayList { MovementType.SIDE, MovementType.FRONT, MovementType.NEUTRAL }, true);
+            armTrajectory.executeMovement(new ArrayList { MovementType.SIDE, MovementType.FRONT, MovementType.NEUTRAL }, false);
+        }
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            bottle.position = sideOriginPos;
+        }
+
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            bottle.position = frontOriginPos;
         }
     }
 }
