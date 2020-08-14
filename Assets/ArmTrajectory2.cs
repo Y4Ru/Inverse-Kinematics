@@ -44,7 +44,7 @@ public class ArmTrajectory2 : MonoBehaviour
 
     private bool bottleGrabbed = false;
 
-    private float bottleDetectionDist = 0.01f;
+    private float bottleDetectionDist = 0.1f;
 
     void Start()
     {
@@ -71,9 +71,9 @@ public class ArmTrajectory2 : MonoBehaviour
         doArmMovement();
     }
 
-    private void detectBottleGrab()
+    private void detectFrontBottleGrab()
     {
-        if ((currentMovement == MovementType.SIDE && getPreviousMovement() != MovementType.FRONT) || (currentMovement == MovementType.FRONT && getPreviousMovement() != MovementType.SIDE))
+        if (currentMovement == MovementType.FRONT && getPreviousMovement() != MovementType.SIDE && Vector3.Distance(bottleGrabAnchor.position, bottleHandParent.position) < bottleDetectionDist)
         {
             bottle.parent = bottleHandParent.transform;
             bottle.GetComponent<Rigidbody>().isKinematic = true;
@@ -81,7 +81,17 @@ public class ArmTrajectory2 : MonoBehaviour
         }
     }
 
-    private void detectBottleDrop()
+    private void detectSideBottleGrab()
+    {
+        if ((currentMovement == MovementType.SIDE && getPreviousMovement() != MovementType.FRONT))
+        {
+            bottle.parent = bottleHandParent.transform;
+            bottle.GetComponent<Rigidbody>().isKinematic = true;
+            bottleGrabbed = true;
+        }
+    }
+
+    private void detectFrontBottleDrop()
     {
         if (getPreviousMovement() == MovementType.SIDE && currentMovement == MovementType.FRONT)
         {
@@ -90,7 +100,10 @@ public class ArmTrajectory2 : MonoBehaviour
             bottle.position = frontOriginPos;
             bottleGrabbed = false;
         }
+    }
 
+    private void detectSideBottleDrop()
+    {
         if (getPreviousMovement() == MovementType.FRONT && currentMovement == MovementType.SIDE)
         {
             bottle.parent = null;
@@ -144,7 +157,7 @@ public class ArmTrajectory2 : MonoBehaviour
         transform.rotation = Quaternion.Lerp(startTrajectory.rotation, endTrajectory.rotation, fractionOfJourney);
     }
 
-    private void doParabolaUpdate()
+    private void doParabolaUpdate(string direction)
     {
         float dynamicSpeed = journeyLength / movementDuration;
 
@@ -155,7 +168,7 @@ public class ArmTrajectory2 : MonoBehaviour
         float fractionOfJourney = distCovered / journeyLength;
 
         // Set our position as a fraction of the distance between the markers.
-        transform.position = MathParabola.Parabola(startTrajectory.position, endTrajectory.position, 0.5f, fractionOfJourney);
+        transform.position = MathParabola.Parabola(startTrajectory.position, endTrajectory.position, 0.5f, fractionOfJourney, direction);
         //if (inverseFront)
         //{
         transform.rotation = Quaternion.Lerp(startTrajectory.rotation, endTrajectory.rotation, fractionOfJourney);
@@ -233,9 +246,15 @@ public class ArmTrajectory2 : MonoBehaviour
         {
             isCurrentMovementInitialized = false;
         }
-        if (currentMovement == MovementType.SIDE && getPreviousMovement() == MovementType.FRONT || currentMovement == MovementType.FRONT && getPreviousMovement() == MovementType.SIDE)
+        if (currentMovement == MovementType.SIDE && getPreviousMovement() == MovementType.FRONT
+            || currentMovement == MovementType.FRONT && getPreviousMovement() == MovementType.SIDE)
         {
-            doParabolaUpdate();
+            doParabolaUpdate("y");
+        }
+        else if (currentMovement == MovementType.FRONT && inverseFront)
+        {
+            doParabolaUpdate("z");
+
         }
         else
         {
@@ -318,8 +337,15 @@ public class ArmTrajectory2 : MonoBehaviour
             if (currentMovement == MovementType.FRONT && (Vector3.Distance(transform.position, front.GetChild(0).position) < 0.01f || Vector3.Distance(transform.position, front.GetChild(1).position) < 0.01f))
             {
                 MovementType previousMovement = getPreviousMovement();
-                detectBottleGrab();
-                detectBottleDrop();
+                if (bottleGrabbed)
+                {
+                    detectFrontBottleDrop();
+                }
+                else
+                {
+                    detectFrontBottleGrab();
+
+                }
                 currentMovementIndex += 1;
                 if (currentMovementIndex < movementSequence.Count)
                 {
@@ -338,8 +364,15 @@ public class ArmTrajectory2 : MonoBehaviour
             if (currentMovement == MovementType.SIDE && (Vector3.Distance(transform.position, side.GetChild(0).position) < 0.01f || Vector3.Distance(transform.position, side.GetChild(1).position) < 0.01f))
             {
                 MovementType previousMovement = getPreviousMovement();
-                detectBottleGrab();
-                detectBottleDrop();
+                if (bottleGrabbed)
+                {
+                    detectSideBottleDrop();
+                }
+                else
+                {
+                    detectSideBottleGrab();
+
+                }
                 currentMovementIndex += 1;
                 if (currentMovementIndex < movementSequence.Count)
                 {

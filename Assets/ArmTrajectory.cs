@@ -154,7 +154,7 @@ public class ArmTrajectory : MonoBehaviour
         float fractionOfJourney = distCovered / journeyLength;
 
         // Set our position as a fraction of the distance between the markers.
-        transform.position = MathParabola.Parabola(startTrajectory.position, endTrajectory.position, 0.5f, fractionOfJourney);
+        transform.position = MathParabola.Parabola(startTrajectory.position, endTrajectory.position, 0.5f, fractionOfJourney, "y");
         if (inverseFront)
         {
             transform.rotation = Quaternion.Lerp(startTrajectory.rotation, endTrajectory.rotation, fractionOfJourney);
