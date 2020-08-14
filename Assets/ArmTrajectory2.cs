@@ -83,7 +83,7 @@ public class ArmTrajectory2 : MonoBehaviour
 
     private void detectSideBottleGrab()
     {
-        if ((currentMovement == MovementType.SIDE && getPreviousMovement() != MovementType.FRONT))
+        if ((currentMovement == MovementType.SIDE && getPreviousMovement() != MovementType.FRONT && Vector3.Distance(bottleGrabAnchor.position, bottleHandParent.position) < bottleDetectionDist))
         {
             bottle.parent = bottleHandParent.transform;
             bottle.GetComponent<Rigidbody>().isKinematic = true;
