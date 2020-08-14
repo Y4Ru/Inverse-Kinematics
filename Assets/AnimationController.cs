@@ -48,12 +48,12 @@ public class AnimationController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            armTrajectory.executeMovement(new ArrayList { MovementType.FRONT, MovementType.SIDE, MovementType.NEUTRAL }, true);
+            armTrajectory.executeMovement(new ArrayList { MovementType.FRONT, MovementType.SIDE, MovementType.NEUTRAL }, false);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            armTrajectory.executeMovement(new ArrayList { MovementType.SIDE, MovementType.FRONT, MovementType.NEUTRAL }, true);
+            armTrajectory.executeMovement(new ArrayList { MovementType.SIDE, MovementType.FRONT, MovementType.NEUTRAL }, false);
         }
 
         if (Input.GetKeyDown(KeyCode.S))

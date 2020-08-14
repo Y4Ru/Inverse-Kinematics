@@ -45,6 +45,10 @@ public class ArmTrajectory2 : MonoBehaviour
     private bool bottleGrabbed = false;
 
     private float bottleDetectionDist = 0.1f;
+    private GripAnimator fingerAnimator;
+    public Transform fingerTarget;
+
+
 
     void Start()
     {
@@ -56,6 +60,8 @@ public class ArmTrajectory2 : MonoBehaviour
         sideOriginPos = side.position;
         sideOriginRot = side.rotation;
         setHandOffsetPositions();
+        fingerAnimator = fingerTarget.GetComponent<GripAnimator>();
+
     }
 
 
@@ -329,21 +335,23 @@ public class ArmTrajectory2 : MonoBehaviour
         }
 
     }
+
     private void doArmMovement()
     {
         if (movementSequence != null && movementSequence.Count > 0)
         {
-
             if (currentMovement == MovementType.FRONT && (Vector3.Distance(transform.position, front.GetChild(0).position) < 0.01f || Vector3.Distance(transform.position, front.GetChild(1).position) < 0.01f))
             {
                 MovementType previousMovement = getPreviousMovement();
                 if (bottleGrabbed)
                 {
                     detectFrontBottleDrop();
+                    fingerAnimator.executeOpenGrip(0.15f);
                 }
                 else
                 {
                     detectFrontBottleGrab();
+                    fingerAnimator.executeCloseGrip(0.15f);
 
                 }
                 currentMovementIndex += 1;
@@ -367,10 +375,12 @@ public class ArmTrajectory2 : MonoBehaviour
                 if (bottleGrabbed)
                 {
                     detectSideBottleDrop();
+                    fingerAnimator.executeOpenGrip(0.15f);
                 }
                 else
                 {
                     detectSideBottleGrab();
+                    fingerAnimator.executeCloseGrip(0.15f);
 
                 }
                 currentMovementIndex += 1;
