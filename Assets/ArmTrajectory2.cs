@@ -69,21 +69,11 @@ public class ArmTrajectory2 : MonoBehaviour
         //Debug.DrawLine(handRoot.position, handRoot.position + normal, Color.green);
         //Debug.DrawLine(handRoot.position, handRoot.position + handRoot.transform.right, Color.green);
         doArmMovement();
-
-        if (bottleGrabbed)
-        {
-            detectBottleDrop();
-        }
-        else
-        {
-            detectBottleGrab();
-        }
-
     }
 
     private void detectBottleGrab()
     {
-        if (Vector3.Distance(bottleGrabAnchor.position, bottleHandParent.position) < bottleDetectionDist)
+        if ((currentMovement == MovementType.SIDE && getPreviousMovement() != MovementType.FRONT) || (currentMovement == MovementType.FRONT && getPreviousMovement() != MovementType.SIDE))
         {
             bottle.parent = bottleHandParent.transform;
             bottle.GetComponent<Rigidbody>().isKinematic = true;
@@ -93,32 +83,20 @@ public class ArmTrajectory2 : MonoBehaviour
 
     private void detectBottleDrop()
     {
-        if (Vector3.Distance(transform.position, neutral.position) < bottleDetectionDist)
-        {
-            bottle.parent = null;
-            bottleGrabbed = false;
-        }
-
         if (getPreviousMovement() == MovementType.SIDE && currentMovement == MovementType.FRONT)
         {
-            if (Vector3.Distance(transform.position, front.GetChild(0).position) < bottleDetectionDist || Vector3.Distance(transform.position, front.GetChild(1).position) < bottleDetectionDist)
-            {
-                bottle.parent = null;
-                bottle.GetComponent<Rigidbody>().isKinematic = false;
-                bottle.position = frontOriginPos;
-                bottleGrabbed = false;
-            }
+            bottle.parent = null;
+            bottle.GetComponent<Rigidbody>().isKinematic = false;
+            bottle.position = frontOriginPos;
+            bottleGrabbed = false;
         }
 
         if (getPreviousMovement() == MovementType.FRONT && currentMovement == MovementType.SIDE)
         {
-            if (Vector3.Distance(transform.position, side.GetChild(0).position) < bottleDetectionDist || Vector3.Distance(transform.position, side.GetChild(1).position) < bottleDetectionDist)
-            {
-                bottle.parent = null;
-                bottle.GetComponent<Rigidbody>().isKinematic = false;
-                bottle.position = sideOriginPos;
-                bottleGrabbed = false;
-            }
+            bottle.parent = null;
+            bottle.GetComponent<Rigidbody>().isKinematic = false;
+            bottle.position = sideOriginPos;
+            bottleGrabbed = false;
         }
     }
 
@@ -340,6 +318,8 @@ public class ArmTrajectory2 : MonoBehaviour
             if (currentMovement == MovementType.FRONT && (Vector3.Distance(transform.position, front.GetChild(0).position) < 0.01f || Vector3.Distance(transform.position, front.GetChild(1).position) < 0.01f))
             {
                 MovementType previousMovement = getPreviousMovement();
+                detectBottleGrab();
+                detectBottleDrop();
                 currentMovementIndex += 1;
                 if (currentMovementIndex < movementSequence.Count)
                 {
@@ -358,6 +338,8 @@ public class ArmTrajectory2 : MonoBehaviour
             if (currentMovement == MovementType.SIDE && (Vector3.Distance(transform.position, side.GetChild(0).position) < 0.01f || Vector3.Distance(transform.position, side.GetChild(1).position) < 0.01f))
             {
                 MovementType previousMovement = getPreviousMovement();
+                detectBottleGrab();
+                detectBottleDrop();
                 currentMovementIndex += 1;
                 if (currentMovementIndex < movementSequence.Count)
                 {
