@@ -9291,7 +9291,7 @@ GameObject:
   - component: {fileID: 452203423}
   - component: {fileID: 452203422}
   m_Layer: 0
-  m_Name: CylinderSide
+  m_Name: Cylinder left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9304,12 +9304,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 452203420}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.051129, y: 1.492, z: -2.390001}
-  m_LocalScale: {x: 0.5, y: 0.1, z: 0.5}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -1.6933329, z: 0}
+  m_LocalScale: {x: 1.6666665, y: 0.33333316, z: 1.6666657}
   m_Children: []
-  m_Father: {fileID: 1971609344}
-  m_RootOrder: 6
+  m_Father: {fileID: 767604331}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &452203422
 CapsuleCollider:
@@ -11303,7 +11303,7 @@ GameObject:
   - component: {fileID: 663319945}
   - component: {fileID: 663319944}
   m_Layer: 0
-  m_Name: Cylinder
+  m_Name: Cylinder middle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11316,12 +11316,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 663319942}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.0511284, y: 1.492, z: -0.62033737}
-  m_LocalScale: {x: 0.5, y: 0.1, z: 0.5}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -1.7280402, z: 0}
+  m_LocalScale: {x: 1.6666667, y: 0.3333333, z: 1.6666667}
   m_Children: []
-  m_Father: {fileID: 1971609344}
-  m_RootOrder: 5
+  m_Father: {fileID: 1516211005}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &663319944
 CapsuleCollider:
@@ -17008,11 +17008,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 767604330}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.051129, y: 2, z: -2.3900008}
+  m_LocalPosition: {x: 1.051129, y: 2, z: -2.090001}
   m_LocalScale: {x: 0.3, y: 0.30000016, z: 0.30000016}
   m_Children:
   - {fileID: 467119715}
   - {fileID: 1915182114}
+  - {fileID: 452203421}
   m_Father: {fileID: 1971609344}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -18884,7 +18885,7 @@ GameObject:
   - component: {fileID: 1010796595}
   - component: {fileID: 1010796594}
   m_Layer: 0
-  m_Name: CylinderSide (1)
+  m_Name: Cylinder right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18898,11 +18899,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1010796592}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.051, y: 1.492, z: 1.15}
+  m_LocalPosition: {x: 1.051, y: 1.492, z: 0.85}
   m_LocalScale: {x: 0.5, y: 0.1, z: 0.5}
   m_Children: []
   m_Father: {fileID: 1971609344}
-  m_RootOrder: 7
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &1010796594
 CapsuleCollider:
@@ -32632,6 +32633,7 @@ Transform:
   m_Children:
   - {fileID: 1573671054}
   - {fileID: 361324977}
+  - {fileID: 663319943}
   m_Father: {fileID: 1971609344}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -36387,8 +36389,6 @@ Transform:
   - {fileID: 1292818845}
   - {fileID: 767604331}
   - {fileID: 1516211005}
-  - {fileID: 663319943}
-  - {fileID: 452203421}
   - {fileID: 1010796593}
   m_Father: {fileID: 904144889}
   m_RootOrder: 1
