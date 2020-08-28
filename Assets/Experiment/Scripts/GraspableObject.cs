@@ -138,6 +138,7 @@ public class GraspableObject : MonoBehaviour
 
     public virtual bool OnRelease(GameObject hand)
     {
+        Debug.Log(">>RELEASED");
         this.Grasped = false;
         this.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
         this.GetComponent<Rigidbody>().useGravity = true;

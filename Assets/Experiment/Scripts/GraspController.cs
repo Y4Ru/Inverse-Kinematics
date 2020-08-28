@@ -103,7 +103,6 @@ public class GraspController : MonoBehaviour
         float minGraspDistance = this.GraspObjectDistance * this.GraspObjectDistance;
         Collider[] graspCandidates =
         Physics.OverlapSphere(graspPosition, GraspObjectDistance, GraspableLayers);
-        Debug.Log(graspCandidates.Length);
         for (int j = 0; j < graspCandidates.Length; ++j)
         {
             float squareDistance = (graspPosition - graspCandidates[j].transform.position).sqrMagnitude;
@@ -112,7 +111,6 @@ public class GraspController : MonoBehaviour
                 !graspCandidates[j].transform.IsChildOf(this.transform) &&
                 graspCandidates[j].tag != "NotGrabbable")
             {
-                Debug.Log("test");
                 GraspableObject grabbable = graspCandidates[j].GetComponent<GraspableObject>();
                 if (grabbable == null || !grabbable.IsGrabbed())
                 {

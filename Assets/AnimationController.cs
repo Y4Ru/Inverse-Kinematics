@@ -18,7 +18,7 @@ public class AnimationController : MonoBehaviour
 
     private Vector3 sideOriginPos;
 
-    private ArmTrajectory2 armTrajectory = null;
+    private ArmTrajectory armTrajectory = null;
 
     private GripAnimator fingerAnimator;
 
@@ -26,7 +26,7 @@ public class AnimationController : MonoBehaviour
 
     void Start()
     {
-        armTrajectory = handTarget.GetComponent<ArmTrajectory2>();
+        armTrajectory = handTarget.GetComponent<ArmTrajectory>();
         fingerAnimator = fingerTarget.GetComponent<GripAnimator>();
         //armTrajectory.executeMovement(new ArrayList { MovementType.FRONT, MovementType.SIDE, MovementType.NEUTRAL }, false);
 
