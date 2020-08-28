@@ -18,11 +18,6 @@ public class BottleReceiver : MonoBehaviour
 
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-
-    }
-
     void OnTriggerStay(Collider other)
     {
         if (armTarget.GetComponent<ArmTrajectory>().GetCurrentMovementType() == MovementType.NO_MOVEMENT && other.gameObject.tag == "Target" && !other.gameObject.GetComponent<GraspableObject>().IsGrabbed())
