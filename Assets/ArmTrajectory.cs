@@ -21,7 +21,7 @@ public class ArmTrajectory : MonoBehaviour
 
     private Quaternion sideOriginRot;
 
-    bool inverseFront = false;
+    bool underhandFront = false;
     // Time when the movement started.
     private float startTime;
     // Total distance between the markers.
@@ -122,7 +122,7 @@ public class ArmTrajectory : MonoBehaviour
         }
     }
 
-    public void executeMovement(ArrayList movementSequence, bool inverseFront)
+    public void executeMovement(ArrayList movementSequence, bool underhandFront)
     {
         transform.rotation = neutral.rotation;
         transform.position = neutral.position;
@@ -142,7 +142,7 @@ public class ArmTrajectory : MonoBehaviour
         ParabolaAnimation = 0;
 
         this.movementSequence = movementSequence;
-        this.inverseFront = inverseFront;
+        this.underhandFront = underhandFront;
         currentMovementIndex = 0;
         if (movementSequence != null && movementSequence.Count > 0)
         {
@@ -178,11 +178,7 @@ public class ArmTrajectory : MonoBehaviour
 
         // Set our position as a fraction of the distance between the markers.
         transform.position = MathParabola.Parabola(startTrajectory.position, endTrajectory.position, 0.5f, fractionOfJourney, direction);
-        //if (inverseFront)
-        //{
         transform.rotation = Quaternion.Lerp(startTrajectory.rotation, endTrajectory.rotation, fractionOfJourney);
-
-        //}
     }
 
     private void initCurrentMovement(Transform movementStart, Transform movementTarget)
@@ -199,33 +195,33 @@ public class ArmTrajectory : MonoBehaviour
     {
         Vector3 offset = bottleHandParent.position - handRoot.position;
 
-        Transform frontInverse = front.GetChild(0);
-        Transform frontNormal = front.GetChild(1);
-        Transform sideInverse = side.GetChild(0);
-        Transform sideNormal = side.GetChild(1);
+        Transform frontunderhandTransform = front.GetChild(0);
+        Transform frontOverhandTransform = front.GetChild(1);
+        Transform sideunderhandTransform = side.GetChild(0);
+        Transform sideOverhandTransform = side.GetChild(1);
 
-        setInverseOffset(frontInverse);
-        setNormalOffset(frontNormal, 30);
-        setInverseOffset(sideInverse);
-        setNormalOffset(sideNormal, 75);
+        setUnderhandOffset(frontunderhandTransform);
+        setOverhandOffset(frontOverhandTransform, 30);
+        setUnderhandOffset(sideunderhandTransform);
+        setOverhandOffset(sideOverhandTransform, 75);
     }
 
-    private void setInverseOffset(Transform inverseTransform)
+    private void setUnderhandOffset(Transform underhandTransform)
     {
         Vector3 offset = bottleHandParent.position - handRoot.position;
 
         offset = Quaternion.Euler(0, 90, -90) * offset;
-        inverseTransform.Translate(offset);
-        inverseTransform.Rotate(90, 0, 0);
+        underhandTransform.Translate(offset);
+        underhandTransform.Rotate(90, 0, 0);
     }
 
-    private void setNormalOffset(Transform normalTransform, float wristRotation)
+    private void setOverhandOffset(Transform overhandTransform, float wristRotation)
     {
         Vector3 offset = bottleHandParent.position - handRoot.position;
 
         offset = Quaternion.Euler(0, 90 + wristRotation, 90) * offset;
-        normalTransform.Translate(offset);
-        normalTransform.Rotate(-90, 0 + wristRotation, 0);
+        overhandTransform.Translate(offset);
+        overhandTransform.Rotate(-90, 0 + wristRotation, 0);
     }
 
     private Transform getMovementOrigin()
@@ -260,7 +256,7 @@ public class ArmTrajectory : MonoBehaviour
         {
             doParabolaUpdate("y");
         }
-        else if (currentMovement == MovementType.FRONT && inverseFront)
+        else if (currentMovement == MovementType.FRONT && underhandFront)
         {
             doParabolaUpdate("z");
 
@@ -289,7 +285,7 @@ public class ArmTrajectory : MonoBehaviour
         switch (currentMovement)
         {
             case MovementType.FRONT:
-                if (inverseFront)
+                if (underhandFront)
                 {
                     return getPreviousMovement() == MovementType.SIDE ? front.GetChild(1) : front.GetChild(0);
                 }
@@ -298,7 +294,7 @@ public class ArmTrajectory : MonoBehaviour
                     return front.GetChild(1);
                 }
             case MovementType.SIDE:
-                if (inverseFront)
+                if (underhandFront)
                 {
                     return getPreviousMovement() == MovementType.FRONT ? side.GetChild(1) : side.GetChild(0);
                 }
@@ -361,7 +357,7 @@ public class ArmTrajectory : MonoBehaviour
                 if (currentMovementIndex < movementSequence.Count)
                 {
                     currentMovement = (MovementType)movementSequence[currentMovementIndex];
-                    if (inverseFront)
+                    if (underhandFront)
                     {
                         initCurrentMovement(previousMovement == MovementType.SIDE ? front.GetChild(1) : front.GetChild(0), getCurrentMovementTarget());
                     }
@@ -390,7 +386,7 @@ public class ArmTrajectory : MonoBehaviour
                 if (currentMovementIndex < movementSequence.Count)
                 {
                     currentMovement = (MovementType)movementSequence[currentMovementIndex];
-                    if (inverseFront)
+                    if (underhandFront)
                     {
                         initCurrentMovement(previousMovement == MovementType.FRONT ? side.GetChild(1) : side.GetChild(0), getCurrentMovementTarget());
                     }
@@ -416,7 +412,7 @@ public class ArmTrajectory : MonoBehaviour
                 currentMovement = MovementType.NO_MOVEMENT;
                 currentMovementIndex = 0;
                 movementSequence = null;
-                inverseFront = false;
+                underhandFront = false;
             }
         }
 
