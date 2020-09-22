@@ -8575,7 +8575,7 @@ GameObject:
   m_Component:
   - component: {fileID: 361324977}
   m_Layer: 0
-  m_Name: normal
+  m_Name: overhand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9477,7 +9477,7 @@ GameObject:
   m_Component:
   - component: {fileID: 467119715}
   m_Layer: 0
-  m_Name: inverse
+  m_Name: underhand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33170,7 +33170,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1573671054}
   m_Layer: 0
-  m_Name: inverse
+  m_Name: underhand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35907,7 +35907,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1915182114}
   m_Layer: 0
-  m_Name: normal
+  m_Name: overhand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
